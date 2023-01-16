@@ -6,7 +6,7 @@
 #    By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/12 16:06:41 by eamghar           #+#    #+#              #
-#    Updated: 2023/01/15 17:52:03 by eamghar          ###   ########.fr        #
+#    Updated: 2023/01/16 14:10:03 by eamghar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ NAME = pipex
 NAME_B = pipex_bonus
 
 SRC =	mandatory/ft_external_functions.c \
+		mandatory/ft_external_functions2.c \
 		mandatory/ft_spilt.c \
 		mandatory/parcing.c \
 
@@ -36,7 +37,8 @@ $(NAME) : $(SRC) $(HEADER)
 $(NAME_B) : $(SRC_B) $(HEADER)
 	$(CC) $(SRC_B) -o $(NAME_B)
 
-clean : rm -rf $(NAME)
+clean : 
+		rm -rf $(NAME)
 		rm -rf $(NAME_B)
 
 fclean : clean
