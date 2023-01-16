@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/16 23:32:02 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/16 23:42:29 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	ft_parcing2(char **av, char **envp)
 		write(2, "ERROR\n", 21);
 		exit(1);
 	}
-	ft_first_child(&av[1], envp, pfd[0], fd[0]);
-	ft_second_child(&av[4], envp, pfd[1], fd[1]);
+	ft_first_child(&av[1], envp, &pfd[0], &fd[0]);
+	ft_second_child(&av[4], envp, &pfd[1], &fd[1]);
 }
 
 void	ft_first_child(char **av, char **envp, int pfd[2], int fd[2])
@@ -71,8 +71,10 @@ void	ft_first_child(char **av, char **envp, int pfd[2], int fd[2])
 	}
 	else if (pid == 0)
 	{
-		dup2(fd[1], STDOUT_FILENO);
-		dup2(pfd[0], STDOUT_FILENO);
+		if(dup2(fd[1], STDOUT_FILENO) == -1)
+			exit(1);
+		if(dup2(pfd[0], STDOUT_FILENO) == -1)
+			exit(1);
 		if(execve(path1, cmd1,envp) == -1)
 			exit(1);
 	}	
@@ -87,7 +89,7 @@ void	ft_second_child(char **av, char **envp, int pfd[2], int fd[2])
 	pfd[1] = open(av[4], O_CREAT | O_WRONLY | O_TRUNC);
 	if(pfd[0] == -1 )
 		exit(1);
-	pid2 == fork();
+	pid2 = fork();
 	if(pid2 == -1)
 	{
 		write(2, "Fork error\n",11);
@@ -95,8 +97,10 @@ void	ft_second_child(char **av, char **envp, int pfd[2], int fd[2])
 	}
 	else if(pid2 == 0)
 	{
-		dup2(fd[0], STDIN_FILENO);
-		dup2(pfd[1], STDOUT_FILENO);
+		if(dup2(fd[0], STDIN_FILENO) == -1)
+			exit(1);
+		if(dup2(pfd[1], STDOUT_FILENO) == -1)
+			exit(1);
 		if(execve(path2, cmd2, envp) == -1)
 			exit(1);
 	}
