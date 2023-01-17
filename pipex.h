@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:07:09 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/16 23:49:16 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/17 22:43:10 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_parcing(char **av, char **envp);
 int		ft_parcing2(char **av, char **envp);
 char	*ft_check_valid_path(char *cmd, char **envp);
 char	*ft_strjoin(char const *s1, char const *s2);
-void	ft_first_child(char **av, char **envp, int pfd[2], int fd[2]);
-void	ft_second_child(char **av, char **envp, int pfd[2], int fd[2]);
+void    first_child(char **argv, char **envp, int pipefd[2], int fd[2], char *path1, char **cmd1);
+void    second_child(char **argv, char **envp, int pipefd[2], int fd[2], char *path2, char **cmd2);
 
 #endif
