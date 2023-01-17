@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/17 22:51:47 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/17 23:44:15 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,51 +50,8 @@ void	ft_parcing(char **av, char **envp)
     close(pfd[1]);
     close(fd[0]);
     close(fd[1]);
-    // waitpid(-1, NULL, 0);
-    // waitpid(-1, NULL, 0);
-	// if (pipe(fd) == -1)
-	// {
-	// 	write(2, "PIPE ERROR\n", 11);
-	// 	exit(1);
-	// }
-	// if((pid1 = fork()) == -1)
-	// {
-	// 	write(2, "FORK ERROR\n", 11);
-	// 	exit(1);
-	// }
-    // else if (pid1 == 0)
-    // {
-    // 	fd[0] = open(av[1], O_RDONLY);
-    //     dup2(fd[0], STDOUT_FILENO);
-    //     close(fd[1]);
-	// 	close(fd[0]);
-    //     // dup2(pipefd[0], STDIN_FILENO);
-    //     // close(pipefd[0]);
-    //     execve(path_cmd1, cmd1, envp);
-    // }
-	// if((pid2 = fork()) == -1)
-	// {
-	// 	write(2, "FORK ERROR\n", 11);
-	// 	exit(1);
-	// }
-	// else if(pid2 == 0)
-	// {
-    // 	fd[1] = open(av[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
-    //     dup2(fd[1], STDIN_FILENO);
-    //     close(fd[1]);
-	// 	close(fd[0]);
-    //     // dup2(pipefd[1], STDOUT_FILENO);
-    //     // close(pipefd[1]);
-    //     execve(path_cmd2, cmd2, envp);
-	// }
-	// printf("here\n");
-	// close(fd[0]);
-	// close(fd[1]);
-	// close(pfd[0]);
-	// close(pfd[1]);
-	// waitpid(-1, &pid2, 0);
-	// waitpid(-1, &pid1, 0);
-
+    waitpid(-1, NULL, 0);
+    waitpid(-1, NULL, 0);
 }
 
 void    first_child(char **argv, char **envp, int pfd[2], int fd[2], char *path1, char **cmd1)
@@ -102,6 +59,11 @@ void    first_child(char **argv, char **envp, int pfd[2], int fd[2], char *path1
     int     pid1;
 
     pfd[0] = open(argv[1], O_RDONLY);
+	if(pfd[0] == -1)
+	{
+		write(2, "OPEN ERROR\n", 11);
+		exit(1);
+	}
     pid1 = fork();
     if (pid1 == -1)
         exit(1);
@@ -120,6 +82,11 @@ void    second_child(char **argv, char **envp, int pfd[2], int fd[2], char *path
     int     pid2;
 
     pfd[1] = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if(pfd[1] == -1)
+	{
+		write(2, "OPEN ERROR\n", 11);
+		exit(1);
+	}
     pid2 = fork();
     if (pid2 == -1)
         exit(1);
