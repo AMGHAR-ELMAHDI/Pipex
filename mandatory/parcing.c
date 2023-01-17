@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/16 23:42:29 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/17 17:26:17 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 int	main(int ac, char **av, char **envp)
 {
-	if (ac != 5)
+	if (ac != 5 || !envp)
 	{
 		write(2, "ERROR\n", 6);
 		return (0);
 	}
 	ft_parcing(av, envp);
+	return(0);
 }
 
 void	ft_parcing(char **av, char **envp)
@@ -28,6 +29,11 @@ void	ft_parcing(char **av, char **envp)
 	char	**cmd2;
 	char	*path_cmd1;
 	char	*path_cmd2;
+	int		pfd[2];
+	int		fd[2];
+	int		pid1;
+	int		pid2;
+	int		status;
 
 	cmd1 = ft_split(av[2], ' ');
 	if (!cmd1)
@@ -37,73 +43,50 @@ void	ft_parcing(char **av, char **envp)
 		exit(1);
 	path_cmd1 = ft_check_valid_path(cmd1[0], envp);
 	path_cmd2 = ft_check_valid_path(cmd2[0], envp);
-	ft_parcing2(av, envp);
-}
-
-void	ft_parcing2(char **av, char **envp)
-{
-	int		pfd[2];
-	int		fd[2];
-
 	if (pipe(fd) == -1)
 	{
-		write(2, "ERROR\n", 21);
+		write(2, "PIPE ERROR\n", 11);
 		exit(1);
 	}
-	ft_first_child(&av[1], envp, &pfd[0], &fd[0]);
-	ft_second_child(&av[4], envp, &pfd[1], &fd[1]);
-}
-
-void	ft_first_child(char **av, char **envp, int pfd[2], int fd[2])
-{
-	pid_t	pid;
-	char	**cmd1;
-	char	*path1;
-
-	pfd[0] = open(av[1], O_RDONLY);
-	if(pfd[0] == -1 )
-		exit(1);
-	pid = fork();
-	if (pid == -1)
+	if((pid1 = fork()) == -1)
 	{
-		write(2, "Fork error\n",11);
+		write(2, "FORK ERROR\n", 11);
 		exit(1);
 	}
-	else if (pid == 0)
+	else if (pid1 == 0)
 	{
-		if(dup2(fd[1], STDOUT_FILENO) == -1)
+		if((pid2 = fork()) == -1)
+		{
+			write(2, "FORK ERROR\n", 11);
 			exit(1);
-		if(dup2(pfd[0], STDOUT_FILENO) == -1)
+		}
+		else if(pid2 == 0)
+		{
+			close(pfd[1]);
+			dup2(pfd[0],STDIN_FILENO);
+			printf("here\n");
+			close(pfd[0]);
+			execve(path_cmd1, cmd1, envp);
+			write(2, "ERROR\n", 14);
 			exit(1);
-		if(execve(path1, cmd1,envp) == -1)
+		}
+		else
+		{
+			close(pfd[0]);
+			dup2(pfd[1], STDOUT_FILENO);
+			printf("here2\n");
+			waitpid(-1, &pid2, 0);
+			execve(path_cmd2, cmd2, envp);
+			write(2, "EXECVE ERROR\n", 14);
 			exit(1);
-	}	
-}
-
-void	ft_second_child(char **av, char **envp, int pfd[2], int fd[2])
-{
-	pid_t	pid2;
-	char	**cmd2;
-	char	*path2;
-
-	pfd[1] = open(av[4], O_CREAT | O_WRONLY | O_TRUNC);
-	if(pfd[0] == -1 )
-		exit(1);
-	pid2 = fork();
-	if(pid2 == -1)
-	{
-		write(2, "Fork error\n",11);
-		exit(1);
+		}
 	}
-	else if(pid2 == 0)
-	{
-		if(dup2(fd[0], STDIN_FILENO) == -1)
-			exit(1);
-		if(dup2(pfd[1], STDOUT_FILENO) == -1)
-			exit(1);
-		if(execve(path2, cmd2, envp) == -1)
-			exit(1);
-	}
+	close(pfd[0]);
+    close(pfd[1]);
+    close(fd[0]);
+    close(fd[1]);
+	// waitpid(-1, &pid2, 0);
+	// waitpid(-1, &pid1, 0);
 }
 
 char	*ft_check_valid_path(char *cmd, char **envp)
@@ -132,3 +115,56 @@ char	*ft_check_valid_path(char *cmd, char **envp)
 	write(2, "COMMAND NOT FOUND!!!\n", 21);
 	exit(1);
 }
+
+void	ft_first_child(char **av, char **envp, int pfd[2], int fd[2])
+{
+	pid_t	pid;
+	char	**cmd1;
+	char	*path1;
+
+	pfd[0] = open(av[1], O_RDONLY);
+	// if(pfd[0] == -1 )
+	// 	exit(1);
+	pid = fork();
+	if (pid == -1)
+	{
+		write(2, "Fork error\n",11);
+		exit(1);
+	}
+	else if (pid == 0)
+	{
+		if(dup2(fd[1], STDOUT_FILENO) == -1)
+			exit(1);
+		if(dup2(pfd[0], STDOUT_FILENO) == -1)
+			exit(1);
+		if(execve(path1, cmd1,envp) == -1)
+			exit(1);
+	}	
+}
+
+void	ft_second_child(char **av, char **envp, int pfd[2], int fd[2])
+{
+	pid_t	pid2;
+	char	**cmd2;
+	char	*path2;
+
+	pfd[1] = open(av[4], O_CREAT | O_WRONLY | O_TRUNC , 0777);
+	// if(pfd[0] == -1 )
+	// 	exit(1);
+	pid2 = fork();
+	if(pid2 == -1)
+	{
+		write(2, "Fork error\n",11);
+		exit(1);
+	}
+	else if(pid2 == 0)
+	{
+		if(dup2(fd[0], STDIN_FILENO) == -1)
+			exit(1);
+		if(dup2(pfd[1], STDOUT_FILENO) == -1)
+			exit(1);
+		if(execve(path2, cmd2, envp) == -1)
+			exit(1);
+	}
+}
+
