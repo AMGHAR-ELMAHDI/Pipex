@@ -6,42 +6,11 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 16:34:47 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/15 18:58:02 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/18 18:21:13 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
-
-int	ft_strncmp(const char *s1, const char *s2)
-{
-	int				i;
-	unsigned char	*str1;
-	unsigned char	*str2;
-
-	str1 = (unsigned char *)s1;
-	str2 = (unsigned char *)s2;
-	i = 0;
-	while (str1[i] || str2[i])
-	{
-		if (str1[i] != str2[i])
-			return (str1[i] - str2[i]);
-		i++;
-	}
-	return (0);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*p;
-
-	if (count == SIZE_MAX && size == SIZE_MAX)
-		return (NULL);
-	p = malloc(count * size);
-	if (!p)
-		return (NULL);
-	ft_bzero (p, size * count);
-	return (p);
-}
 
 size_t	ft_strlen(const char *str)
 {
@@ -82,16 +51,31 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	return (NULL);
 }
 
-void	ft_bzero(void *s, size_t n)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
+	char	*ns;
+	size_t	range;
 	size_t	i;
-	char	*p;
+	size_t	j;
 
 	i = 0;
-	p = (char *)s;
-	while (i < n)
+	j = 0;
+	if (!s1 || !s2)
+		exit(1);
+	range = ft_strlen (s1) + ft_strlen (s2);
+	ns = (char *)malloc(sizeof(char) * (range + 1));
+	if (!ns)
+		exit(1);
+	while (i < ft_strlen (s1))
 	{
-		*p++ = '\0';
+		ns[i] = s1[i];
 		i++;
 	}
+	while (j < ft_strlen (s2))
+	{
+		ns[i + j] = s2[j];
+		j++;
+	}
+	ns[i + j] = '\0';
+	return (ns);
 }
