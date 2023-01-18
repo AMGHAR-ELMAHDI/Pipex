@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:07:09 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/18 21:30:50 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/18 21:35:07 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,7 @@ void	second_child(char **av, char **envp, t_list *pipex);
 //-------------bonus-------------------------
 void	ft_parcing_bonus(int ac, char **av, char **envp);
 char	*ft_strdup(const char *s1);
+char	*ft_strtrim(char const *s1, char const *set);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+
 #endif

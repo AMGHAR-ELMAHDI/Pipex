@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/18 21:31:17 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/18 21:36:37 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 		exit(1);
 	while(pipex.i < ac - 3)
 	{
-		pipex.cmd[pipex.i] = ft_strdup(av[2 + pipex.i]);
+		pipex.cmd[pipex.i] = ft_strtrim(av[2 + pipex.i], " ");
 		pipex.i++;
 	}
 	int i = 0;
