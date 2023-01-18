@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:07:09 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/17 22:43:10 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/18 17:56:30 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@
 # include <math.h>
 # include <fcntl.h>
 
+typedef struct s_list
+{
+	int		fd[2];
+	int		pfd[2];
+	char	**cmd1;
+	char	**cmd2;
+	char	*path1;
+	char	*path2;
+}				t_list;
+
 char	**ft_split(char const *s, char c);
 int		ft_strncmp(const char *s1, const char *s2);
 void	*ft_calloc(size_t count, size_t size);
@@ -32,7 +42,7 @@ void	ft_parcing(char **av, char **envp);
 int		ft_parcing2(char **av, char **envp);
 char	*ft_check_valid_path(char *cmd, char **envp);
 char	*ft_strjoin(char const *s1, char const *s2);
-void    first_child(char **argv, char **envp, int pipefd[2], int fd[2], char *path1, char **cmd1);
-void    second_child(char **argv, char **envp, int pipefd[2], int fd[2], char *path2, char **cmd2);
+void	first_child(char **av, char **envp, t_list *pipex);
+void	second_child(char **av, char **envp, t_list *pipex);
 
 #endif
