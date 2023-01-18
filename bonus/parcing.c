@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/18 21:36:37 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/18 21:44:48 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 		pipex.cmd[pipex.i] = ft_strtrim(av[2 + pipex.i], " ");
 		pipex.i++;
 	}
-	int i = 0;
-	while(pipex.cmd[i])
-		printf("%s\n",pipex.cmd[i++]);
-	// pipex.cmd = ft_split(av[3], ' ');
-	// if (!pipex.cmd)
-	// 	exit(1);
 	// pipex.path1 = ft_check_valid_path(pipex.cmd[0], envp);
 	// if (pipe(pipex.pfd) == -1)
 	// 	exit(1);

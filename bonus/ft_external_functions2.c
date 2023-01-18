@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 18:58:12 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/18 21:34:56 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/18 21:41:53 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	i = 0;
 	j = 0;
 	if (!s1 || !s2)
-		exit(1);
+		return (NULL);
 	range = ft_strlen (s1) + ft_strlen (s2);
 	ns = (char *)malloc(sizeof(char) * (range + 1));
 	if (!ns)
@@ -51,7 +51,7 @@ char	*ft_strdup(const char *s1)
 	p1 = (char *)s1;
 	p2 = (char *)malloc((ft_strlen(p1) + 1) * sizeof(char));
 	if (!p2)
-		return (NULL);
+		exit(1);
 	while (i < ft_strlen(p1))
 	{
 		p2[i] = p1[i];
@@ -81,7 +81,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	int		end;
 
 	if (!s1 || !set)
-		return (NULL);
+		return(NULL);
 	start = 0;
 	end = ft_strlen(s1) - 1;
 	while (s1[start] && skip(s1[start], set))
@@ -101,7 +101,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	i = 0;
 	if (!s)
-		return (NULL);
+		return(NULL);
 	if (start >= ft_strlen(s))
 		return ((char *) ft_calloc(1, sizeof(char)));
 	if (start + len >= ft_strlen(s))
@@ -109,7 +109,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	else
 		substr = malloc(sizeof(char) * (len + 1));
 	if (!substr)
-		return (NULL);
+		exit(1);
 	while (s[start] && i < len)
 		substr[i++] = s[start++];
 	substr[i] = '\0';
