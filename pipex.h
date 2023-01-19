@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:07:09 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/18 21:35:07 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/19 12:26:42 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,13 @@ typedef struct s_list
 	int		fd[2];
 	int		pfd[2];
 	int		i;
-	char	**cmd;
+	char	**cmd1;
+	char	**cmd2;
+	char	**cmdb;
 	char	*path1;
+	char	*path2;
+	char	**pathb;
+	int		pid;
 }				t_list;
 
 char	**ft_split(char const *s, char c);
@@ -48,5 +53,7 @@ void	ft_parcing_bonus(int ac, char **av, char **envp);
 char	*ft_strdup(const char *s1);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-
+void	first_child_b(char **av, char **envp, t_list *pipex);
+void	second_child_b(char **av, char **envp, t_list *pipex)
+;
 #endif
