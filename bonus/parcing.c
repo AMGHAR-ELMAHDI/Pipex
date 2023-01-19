@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/19 15:48:59 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:22:59 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,16 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 	t_list	pipex;
 
 	pipex.i = -1;
-	pipex.cmdb = ft_calloc((ac - 2) , sizeof(char *));
-	pipex.pathb = ft_calloc((ac - 2) , sizeof(char *));
-	if(!pipex.cmdb || !pipex.pathb)
+	pipex.cmdb = ft_calloc((ac - 2), sizeof(char *));
+	pipex.pathb = ft_calloc((ac - 2), sizeof(char *));
+	if (!pipex.cmdb || !pipex.pathb)
 		exit(1);
-	while(++pipex.i < ac - 3)
+	while (++pipex.i < ac - 3)
 		pipex.cmdb[pipex.i] = ft_strtrim(av[2 + pipex.i], " ");
 	pipex.i = -1;
-	while(pipex.cmdb[++pipex.i])
-		pipex.pathb[pipex.i] = ft_check_valid_path(ft_split(pipex.cmdb[pipex.i], ' ')[0], envp);
+	while (pipex.cmdb[++pipex.i])
+		pipex.pathb[pipex.i] = ft_check_valid_path
+			(ft_split(pipex.cmdb[pipex.i], ' ')[0], envp);
 	pipex.fd[0] = open(av[1], O_RDONLY, 0777);
 	if (pipex.fd[0] == -1)
 		exit(1);
@@ -44,23 +45,21 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 	if (pipex.fd[1] == -1)
 		exit(1);
 	pipex.i = -1;
-	while(pipex.cmdb[++pipex.i])
+	while (pipex.cmdb[++pipex.i])
 	{
-		puts(pipex.cmdb[pipex.i]);
-		puts(pipex.pathb[pipex.i]);
-		if(pipex.i != ac - 4)
+		if (pipex.i != ac - 4)
 		{
 			if (pipe(pipex.pfd) == -1)
 				exit(1);
 		}
 		pipex.pid = fork();
-		if(pipex.pid == -1)
+		if (pipex.pid == -1)
 			exit(1);
-		if(pipex.pid == 0)
+		if (pipex.pid == 0)
 		{
-			if (pipex.i == 0 )
+			if (pipex.i == 0)
 				dup2(pipex.fd[0], 0);
-			if(pipex.i == ac - 4)
+			if (pipex.i == ac - 4)
 			{
 				if (dup2(pipex.fd[1], 1) == -1)
 					exit(1);
@@ -72,7 +71,8 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 			}
 			close(pipex.pfd[1]);
 			close(pipex.pfd[0]);
-			execve(pipex.pathb[pipex.i],ft_split(pipex.cmdb[pipex.i], ' '), envp);
+			execve(pipex.pathb[pipex.i], ft_split
+				(pipex.cmdb[pipex.i], ' '), envp);
 		}
 		dup2(pipex.pfd[0], 0);
 		close(pipex.pfd[1]);
@@ -80,6 +80,8 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 		wait(NULL);
 	}
 }
+
+void	ft_children()
 
 char	*ft_check_valid_path(char *cmd, char **envp)
 {
@@ -101,12 +103,8 @@ char	*ft_check_valid_path(char *cmd, char **envp)
 		end_path = ft_strjoin(tmp, cmd);
 		free(tmp);
 		if (access(end_path, F_OK | X_OK) == 0)
-		{
 			return (end_path);
-		}
 	}
 	write(2, "COMMAND NOT FOUND!!!\n", 21);
 	exit(1);
 }
-
-

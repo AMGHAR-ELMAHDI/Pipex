@@ -6,7 +6,7 @@
 #    By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/12 16:06:41 by eamghar           #+#    #+#              #
-#    Updated: 2023/01/18 21:30:02 by eamghar          ###   ########.fr        #
+#    Updated: 2023/01/19 15:52:44 by eamghar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,10 +34,10 @@ all : $(NAME)
 bonus : $(NAME_B)
 
 $(NAME) : $(SRC) $(HEADER)
-	$(CC) $(SRC) -o $(NAME)
+	$(CC) $(SRC) $(CFLAGS) -o $(NAME)
 
 $(NAME_B) : $(SRC_B) $(HEADER)
-	$(CC) $(SRC_B) -o $(NAME_B)
+	$(CC) $(SRC_B) $(CFLAGS)-o $(NAME_B)
 
 clean : 
 		rm -rf $(NAME)

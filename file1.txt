@@ -1,3 +1,7 @@
-wow this is a really dumb test
-fuck this project
-dsdsdsdsds
+ft_1
+4
+5
+5 6 8 4
+11
+ft_ll
+ft_pp
