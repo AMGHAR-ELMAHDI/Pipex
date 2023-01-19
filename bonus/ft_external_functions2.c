@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 18:58:12 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/18 21:41:53 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:51:05 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	int		end;
 
 	if (!s1 || !set)
-		return(NULL);
+		return (NULL);
 	start = 0;
 	end = ft_strlen(s1) - 1;
 	while (s1[start] && skip(s1[start], set))
@@ -93,7 +93,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 	return (ft_substr(s1, start, (end - start + 1)));
 }
 
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*substr;
@@ -101,7 +100,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	i = 0;
 	if (!s)
-		return(NULL);
+		return (NULL);
 	if (start >= ft_strlen(s))
 		return ((char *) ft_calloc(1, sizeof(char)));
 	if (start + len >= ft_strlen(s))
