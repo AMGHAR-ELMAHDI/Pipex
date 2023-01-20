@@ -6,7 +6,7 @@
 #    By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/12 16:06:41 by eamghar           #+#    #+#              #
-#    Updated: 2023/01/19 15:52:44 by eamghar          ###   ########.fr        #
+#    Updated: 2023/01/20 16:39:31 by eamghar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,12 @@ SRC =	mandatory/ft_external_functions.c \
 		mandatory/ft_spilt.c \
 		mandatory/parcing.c \
 
-SRC_B = bonus/ft_external_functions.c \
+SRC_B =	bonus/ft_external_functions.c \
 		bonus/ft_external_functions2.c \
 		bonus/ft_spilt.c \
+		bonus/get_next_line.c \
+		bonus/get_next_line_utils.c \
+		bonus/here_doc.c \
 		bonus/parcing.c \
 
 CC = cc

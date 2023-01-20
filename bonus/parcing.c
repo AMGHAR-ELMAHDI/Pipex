@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/19 17:50:03 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/20 16:37:07 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int	main(int ac, char **av, char **envp)
 		write(2, "ERROR\n", 6);
 		exit (1);
 	}
-	ft_parcing_bonus(ac, av, envp);
+	if (ft_strcmp(av[1], "here_doc") == 0)
+		parcing_here_doc(ac, av, envp);
+	else
+		ft_parcing_bonus(ac, av, envp);
 	return (0);
 }
 
