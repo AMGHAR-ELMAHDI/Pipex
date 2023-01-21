@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 15:40:36 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/21 19:05:44 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 23:04:47 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ void	first_child_here_doc(char **envp, t_list *pipex)
 
 	if (!pipex->cmd1[0])
 		exit(1);
+	pipex->fd[0] = open("tmp", O_RDONLY | O_APPEND, 0777);
+	if (pipex->fd[0] == -1)
+		exit(1);
 	pid1 = fork();
 	if (pid1 == -1)
 		exit(1);
@@ -79,7 +82,7 @@ void	second_child_here_doc(char **av, char **envp, t_list *pipex)
 
 	if (!pipex->cmd2[0])
 		exit(1);
-	pipex->fd[1] = open(av[5], O_CREAT | O_WRONLY, 0777);
+	pipex->fd[1] = open(av[5], O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (pipex->fd[1] == -1)
 		exit(1);
 	pid2 = fork();
