@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 15:40:36 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/21 17:26:24 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 19:05:44 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,8 @@ void	parcing_here_doc(int ac, char **av, char **envp)
 	pipex.path1 = ft_check_valid_path(pipex.cmd1[0], envp);
 	pipex.path2 = ft_check_valid_path(pipex.cmd2[0], envp);
 	pipex.fd[0] = open("tmp", O_CREAT | O_RDWR | O_APPEND, 0777);
-	if (pipex.fd[0] == -1)
-	{
-		puts("child11");
-		exit(1);		
-	}
+	if (pipex.fd[0] == -1 || !pipex.path1 || !pipex.path2)
+		exit(1);
 	pipex.limiter = ft_strjoin(av[2], "\n");
 	pipex.s = get_next_line_get(0);
 	while (ft_strcmp(pipex.s, pipex.limiter) != 0)
@@ -58,7 +55,7 @@ void	first_child_here_doc(char **envp, t_list *pipex)
 {
 	int		pid1;
 
-	if (!pipex->cmd1[0] || !pipex->path1)
+	if (!pipex->cmd1[0])
 		exit(1);
 	pid1 = fork();
 	if (pid1 == -1)
@@ -80,14 +77,11 @@ void	second_child_here_doc(char **av, char **envp, t_list *pipex)
 {
 	int	pid2;
 
-	if (!pipex->cmd2[0] || !pipex->path2)
+	if (!pipex->cmd2[0])
 		exit(1);
 	pipex->fd[1] = open(av[5], O_CREAT | O_WRONLY, 0777);
 	if (pipex->fd[1] == -1)
-	{
-		puts("child2");
-		exit(1);		
-	}
+		exit(1);
 	pid2 = fork();
 	if (pid2 == -1)
 		exit(1);

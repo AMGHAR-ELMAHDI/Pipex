@@ -6,23 +6,19 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/21 16:49:40 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 19:09:48 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-// void	funn(void)
-// {
-// 	system("leaks pipex");
-// }
-
 int	main(int ac, char **av, char **envp)
 {
-	// atexit(funn);
-	int i = 0;
-	int cond = 0;
+	int		i;
+	int		cond;
 
+	i = 0;
+	cond = 0;
 	while (envp[i])
 	{
 		if (ft_strnstr(envp[i], "PATH", 4))
@@ -35,7 +31,6 @@ int	main(int ac, char **av, char **envp)
 		exit (1);
 	}
 	ft_parcing(av, envp);
-	while(1);
 	return (0);
 }
 
