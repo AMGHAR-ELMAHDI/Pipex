@@ -6,20 +6,36 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/18 17:58:42 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 16:49:40 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
+// void	funn(void)
+// {
+// 	system("leaks pipex");
+// }
+
 int	main(int ac, char **av, char **envp)
 {
-	if (ac != 5 || !envp[0])
+	// atexit(funn);
+	int i = 0;
+	int cond = 0;
+
+	while (envp[i])
+	{
+		if (ft_strnstr(envp[i], "PATH", 4))
+			cond = 1;
+		i++;
+	}
+	if (ac != 5 || !envp[0] || cond == 0)
 	{
 		write(2, "ERROR\n", 6);
 		exit (1);
 	}
 	ft_parcing(av, envp);
+	while(1);
 	return (0);
 }
 
@@ -39,6 +55,10 @@ void	ft_parcing(char **av, char **envp)
 		exit(1);
 	first_child(av, envp, &pipex);
 	second_child(av, envp, &pipex);
+	free(pipex.cmd1);
+	free(pipex.cmd2);
+	free(pipex.path1);
+	free(pipex.path2);
 	close(pipex.pfd[0]);
 	close(pipex.pfd[1]);
 	close(pipex.fd[0]);

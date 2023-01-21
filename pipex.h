@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:07:09 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/20 16:49:39 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/20 23:46:28 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*ft_check_valid_path(char *cmd, char **envp);
 char	*ft_strjoin(char const *s1, char const *s2);
 void	first_child(char **av, char **envp, t_list *pipex);
 void	second_child(char **av, char **envp, t_list *pipex);
-//-------------bonus-------------------------
+//-------------bonus multiple pipes-------------------------
 void	ft_parcing_bonus(int ac, char **av, char **envp);
 char	*ft_strdup(const char *s1);
 char	*ft_strtrim(char const *s1, char const *set);
@@ -62,6 +62,7 @@ void	first_child_b(char **av, char **envp, t_list *pipex);
 void	second_child_b(char **av, char **envp, t_list *pipex);
 void	ft_children(t_list *pipex, int ac, char **envp);
 void	ft_children2(t_list *pipex, int ac, char **envp);
+//--------------bonus here_doc-------------------------------
 void	parcing_here_doc(int ac, char **av, char **envp);
 char	*get_next_line_get(int fd);
 char	*ft_read_str_get(int fd, char *str_left);
@@ -73,4 +74,6 @@ char	*ft_new_str_left_get(char *str_left);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
+void	first_child_here_doc(char **envp, t_list *pipex);
+void	second_child_here_doc(char **av, char **envp, t_list *pipex);
 #endif
