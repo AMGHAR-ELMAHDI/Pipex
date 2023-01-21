@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/21 19:09:48 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 23:48:54 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,8 @@ void	ft_parcing(char **av, char **envp)
 	t_list	pipex;
 
 	pipex.cmd1 = ft_split(av[2], ' ');
-	if (!pipex.cmd1)
-		exit(1);
 	pipex.cmd2 = ft_split(av[3], ' ');
-	if (!pipex.cmd2)
+	if (!pipex.cmd1 || !pipex.cmd2)
 		exit(1);
 	pipex.path1 = ft_check_valid_path(pipex.cmd1[0], envp);
 	pipex.path2 = ft_check_valid_path(pipex.cmd2[0], envp);
@@ -64,8 +62,6 @@ void	first_child(char **av, char **envp, t_list *pipex)
 {
 	int		pid1;
 
-	if (!pipex->cmd1[0] || !pipex->path1)
-		exit(1);
 	pipex->fd[0] = open(av[1], O_RDONLY, 0777);
 	if (pipex->fd[0] == -1)
 		exit(1);
@@ -89,8 +85,6 @@ void	second_child(char **av, char **envp, t_list *pipex)
 {
 	int	pid2;
 
-	if (!pipex->cmd2[0] || !pipex->path2)
-		exit(1);
 	pipex->fd[1] = open(av[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (pipex->fd[1] == -1)
 		exit(1);

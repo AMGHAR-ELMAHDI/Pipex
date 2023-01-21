@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 16:34:47 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/20 16:19:50 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 23:12:59 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*ft_calloc(size_t count, size_t size)
 		return (NULL);
 	p = malloc(count * size);
 	if (!p)
-		return (NULL);
+		exit(1);
 	ft_bzero (p, size * count);
 	return (p);
 }
@@ -74,6 +74,20 @@ void	ft_bzero(void *s, size_t n)
 	while (i < n)
 	{
 		*p++ = '\0';
+		i++;
+	}
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	if (fd < 0 || !s)
+		return ;
+	while (s[i])
+	{
+		ft_putchar_fd (s[i], fd);
 		i++;
 	}
 }

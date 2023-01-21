@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:07:09 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/20 23:46:28 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 23:09:21 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	ft_children(t_list *pipex, int ac, char **envp);
 void	ft_children2(t_list *pipex, int ac, char **envp);
 //--------------bonus here_doc-------------------------------
 void	parcing_here_doc(int ac, char **av, char **envp);
+void	parcing_here_doc2(char **av, char **envp, t_list *pipex);
 char	*get_next_line_get(int fd);
 char	*ft_read_str_get(int fd, char *str_left);
 size_t	ft_strlen_get(char *s);

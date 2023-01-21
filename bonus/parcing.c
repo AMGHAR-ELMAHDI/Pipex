@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/20 16:37:07 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 23:47:10 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,18 @@
 
 int	main(int ac, char **av, char **envp)
 {
-	if (ac < 5 || !envp[0])
+	int		i;
+	int		cond;
+
+	i = 0;
+	cond = 0;
+	while (envp[i])
+	{
+		if (ft_strnstr(envp[i], "PATH", 4))
+			cond = 1;
+		i++;
+	}
+	if (ac < 5 || !envp[0] || cond == 0)
 	{
 		write(2, "ERROR\n", 6);
 		exit (1);
@@ -73,7 +84,6 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 	pipex.fd[1] = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (pipex.fd[1] == -1)
 		exit(1);
-	pipex.i = -1;
 	ft_children(&pipex, ac, envp);
 }
 
@@ -92,17 +102,27 @@ void	ft_children(t_list *pipex, int ac, char **envp)
 			exit(1);
 		if (pipex->pid == 0)
 			ft_children2(pipex, ac, envp);
-		dup2(pipex->pfd[0], 0);
+		if (dup2(pipex->pfd[0], 0) == -1)
+			exit(1);
 		close(pipex->pfd[1]);
 		close(pipex->pfd[0]);
 		wait(NULL);
 	}
+	free(pipex->cmdb);
+	free(pipex->pathb);
+	close(pipex->pfd[0]);
+	close(pipex->pfd[1]);
+	close(pipex->fd[0]);
+	close(pipex->fd[1]);
 }
 
 void	ft_children2(t_list *pipex, int ac, char **envp)
 {
 	if (pipex->i == 0)
-		dup2(pipex->fd[0], 0);
+	{
+		if (dup2(pipex->fd[0], 0) == -1)
+			exit(1);
+	}
 	if (pipex->i == ac - 4)
 	{
 		if (dup2(pipex->fd[1], 1) == -1)
@@ -115,6 +135,7 @@ void	ft_children2(t_list *pipex, int ac, char **envp)
 	}
 	close(pipex->pfd[1]);
 	close(pipex->pfd[0]);
-	execve(pipex->pathb[pipex->i], ft_split
-		(pipex->cmdb[pipex->i], ' '), envp);
+	if (execve(pipex->pathb[pipex->i], ft_split
+			(pipex->cmdb[pipex->i], ' '), envp) == -1)
+		exit(1);
 }

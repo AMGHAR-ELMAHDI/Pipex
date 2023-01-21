@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 16:33:32 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/18 17:16:15 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 23:11:56 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,9 @@ char	**ft_split(char const *s, char c)
 	}
 	arr[i] = 0;
 	return (arr);
+}
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write (fd, &c, 1);
 }

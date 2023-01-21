@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 14:26:08 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/20 15:39:40 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/21 23:18:17 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*ft_strjoin_get(char *str_left, char *buff)
 		return (NULL);
 	s = malloc((ft_strlen_get(str_left) + ft_strlen_get(buff)) + 1);
 	if (!s)
-		return (NULL);
+		exit(1);
 	i = -1;
 	j = 0;
 	while (str_left[++i] != '\0')
@@ -82,7 +82,7 @@ char	*ft_get_line_get(char *str_left)
 		i++;
 	s = (char *)malloc(i + 2);
 	if (!s)
-		return (NULL);
+		exit(1);
 	i = 0;
 	while (str_left[i] && str_left[i] != '\n')
 	{
@@ -114,7 +114,7 @@ char	*ft_new_str_left_get(char *str_left)
 	}
 	s = (char *)malloc(ft_strlen_get(str_left) - i + 1);
 	if (!s)
-		return (NULL);
+		exit(1);
 	i++;
 	j = 0;
 	while (str_left[i])
