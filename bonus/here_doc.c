@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 15:40:36 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 14:52:45 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 16:32:39 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	second_child_here_doc(char **av, char **envp, t_list *pipex)
 {
 	int	pid2;
 
-	pipex->fd[1] = open(av[5], O_CREAT | O_RDWR | O_TRUNC, 0777);
+	pipex->fd[1] = open(av[5], O_CREAT | O_RDWR | O_APPEND, 0777);
 	if (pipex->fd[1] == -1)
 		exit(1);
 	pid2 = fork();
