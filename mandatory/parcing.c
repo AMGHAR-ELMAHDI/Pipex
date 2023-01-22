@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 14:20:58 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 14:26:51 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ char	*ft_check_valid_path(char *cmd, char **envp)
 			free(path);
 			return (end_path);
 		}
+		free(end_path);
 		i++;
 	}
 	write(2, "COMMAND NOT FOUND!!!\n", 21);
