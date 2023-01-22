@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/21 23:48:54 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 14:20:58 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,16 @@ int	main(int ac, char **av, char **envp)
 		exit (1);
 	}
 	ft_parcing(av, envp);
+	while(1);
 	return (0);
 }
 
 void	ft_parcing(char **av, char **envp)
 {
 	t_list	pipex;
+	int		i;
 
+	i = 0;
 	pipex.cmd1 = ft_split(av[2], ' ');
 	pipex.cmd2 = ft_split(av[3], ' ');
 	if (!pipex.cmd1 || !pipex.cmd2)
@@ -48,7 +51,12 @@ void	ft_parcing(char **av, char **envp)
 		exit(1);
 	first_child(av, envp, &pipex);
 	second_child(av, envp, &pipex);
+	while(pipex.cmd1[i])
+		free(pipex.cmd1[i++]);
 	free(pipex.cmd1);
+	i = 0;
+	while(pipex.cmd2[i])
+		free(pipex.cmd2[i++]);
 	free(pipex.cmd2);
 	free(pipex.path1);
 	free(pipex.path2);
@@ -110,8 +118,10 @@ char	*ft_check_valid_path(char *cmd, char **envp)
 	char	*end_path;
 	char	*tmp;
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
 		i++;
 	path = ft_split(envp[i] + 5, ':');
@@ -124,7 +134,12 @@ char	*ft_check_valid_path(char *cmd, char **envp)
 		end_path = ft_strjoin(tmp, cmd);
 		free(tmp);
 		if (access(end_path, F_OK | X_OK) == 0)
+		{
+			while(path[j])
+				free(path[j++]);
+			free(path);
 			return (end_path);
+		}
 		i++;
 	}
 	write(2, "COMMAND NOT FOUND!!!\n", 21);
