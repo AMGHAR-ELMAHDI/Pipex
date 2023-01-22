@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 15:40:36 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 16:32:39 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 16:48:17 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ void	parcing_here_doc(int ac, char **av, char **envp)
 
 void	parcing_here_doc2(char **av, char **envp, t_list *pipex)
 {
-	int		i;
-
-	i = 0;
 	pipex->fd[0] = open("tmp", O_CREAT | O_RDWR | O_APPEND, 0777);
 	if (pipex->fd[0] == -1)
 		exit(1);
@@ -49,17 +46,25 @@ void	parcing_here_doc2(char **av, char **envp, t_list *pipex)
 		pipex->s = get_next_line_get(0);
 	}
 	free(pipex->s);
+	parcing_here_doc3(av, envp, pipex);
+}
+
+void	parcing_here_doc3(char **av, char **envp, t_list *pipex)
+{
+	int		i;
+
+	i = 0;
 	if (pipe(pipex->pfd) == -1)
 		exit(1);
 	first_child_here_doc(envp, pipex);
 	second_child_here_doc(av, envp, pipex);
 	waitpid(-1, NULL, 0);
 	i = 0;
-	while(pipex->cmd1[i])
+	while (pipex->cmd1[i])
 		free(pipex->cmd1[i++]);
 	free(pipex->cmd1);
 	i = 0;
-	while(pipex->cmd2[i])
+	while (pipex->cmd2[i])
 		free(pipex->cmd2[i++]);
 	free(pipex->cmd2);
 	free(pipex->limiter);
@@ -71,7 +76,6 @@ void	parcing_here_doc2(char **av, char **envp, t_list *pipex)
 	close(pipex->fd[1]);
 	unlink("tmp");
 }
-
 void	first_child_here_doc(char **envp, t_list *pipex)
 {
 	int		pid1;

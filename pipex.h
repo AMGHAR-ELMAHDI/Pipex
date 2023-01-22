@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:07:09 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 14:44:32 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 17:15:39 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,10 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 void	first_child_b(char **av, char **envp, t_list *pipex);
 void	second_child_b(char **av, char **envp, t_list *pipex);
-void	ft_children(t_list *pipex, int ac, char **envp);
+void	ft_children(t_list *pipex, int ac, char **av, char **envp);
 void	ft_children2(t_list *pipex, int ac, char **envp);
+void	ft_children3(t_list *pipex);
+char	*ft_free(char **path, char *tmp, char *end_path, char *cmd);
 //--------------bonus here_doc-------------------------------
 void	parcing_here_doc(int ac, char **av, char **envp);
 void	parcing_here_doc2(char **av, char **envp, t_list *pipex);
@@ -77,4 +79,5 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
 void	first_child_here_doc(char **envp, t_list *pipex);
 void	second_child_here_doc(char **av, char **envp, t_list *pipex);
+void	parcing_here_doc3(char **av, char **envp, t_list *pipex);
 #endif

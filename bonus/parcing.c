@@ -6,20 +6,14 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 16:23:38 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 17:20:22 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-void	fun(void)
-{
-	system("leaks pipex_bonus");
-}
-
 int	main(int ac, char **av, char **envp)
 {
-	atexit(fun);
 	int		i;
 	int		cond;
 
@@ -48,17 +42,34 @@ char	*ft_check_valid_path(char *cmd, char **envp)
 	char	**path;
 	char	*end_path;
 	char	*tmp;
+	char	*ret;
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
+	tmp = NULL;
+	end_path = NULL;
 	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
 		i++;
 	path = ft_split(envp[i] + 5, ':');
 	if (!path)
 		exit(0);
+	ret = ft_free(path, tmp, end_path, cmd);
+	if (!ret)
+	{
+		write(2, "COMMAND NOT FOUND!!!\n", 21);
+		exit(1);
+	}
+	else
+		return (ret);
+}
+
+char	*ft_free(char **path, char *tmp, char *end_path, char *cmd)
+{
+	int		i;
+	int		j;
+
 	i = 0;
+	j = 0;
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");
@@ -66,7 +77,7 @@ char	*ft_check_valid_path(char *cmd, char **envp)
 		free(tmp);
 		if (access(end_path, F_OK | X_OK) == 0)
 		{
-			while(path[j])
+			while (path[j])
 				free(path[j++]);
 			free(path);
 			return (end_path);
@@ -74,10 +85,8 @@ char	*ft_check_valid_path(char *cmd, char **envp)
 		free(end_path);
 		i++;
 	}
-	write(2, "COMMAND NOT FOUND!!!\n", 21);
-	exit(1);
+	return (NULL);
 }
-
 
 void	ft_parcing_bonus(int ac, char **av, char **envp)
 {
@@ -98,21 +107,21 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 		tmp = ft_split(pipex.cmdb[pipex.i], ' ');
 		pipex.pathb[pipex.i] = ft_check_valid_path(tmp[0], envp);
 		i = 0;
-		while(tmp[i])
+		while (tmp[i])
 			free(tmp[i++]);
 		free(tmp);
 	}
 	pipex.fd[0] = open(av[1], O_RDONLY, 0777);
 	if (pipex.fd[0] == -1)
 		exit(1);
-	pipex.fd[1] = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	if (pipex.fd[1] == -1)
-		exit(1);
-	ft_children(&pipex, ac, envp);
+	ft_children(&pipex, ac, av, envp);
 }
 
-void	ft_children(t_list *pipex, int ac, char **envp)
-{
+void	ft_children(t_list *pipex, int ac, char **av, char **envp)
+{	
+	pipex->fd[1] = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (pipex->fd[1] == -1)
+		exit(1);
 	pipex->i = -1;
 	while (pipex->cmdb[++pipex->i])
 	{
@@ -132,13 +141,17 @@ void	ft_children(t_list *pipex, int ac, char **envp)
 		close(pipex->pfd[0]);
 		wait(NULL);
 	}
-	printf("here2\n");
+	ft_children3(pipex);
+}
+
+void	ft_children3(t_list *pipex)
+{
 	pipex->i = 0;
-	while(pipex->cmdb[pipex->i])
+	while (pipex->cmdb[pipex->i])
 		free(pipex->cmdb[pipex->i++]);
 	free(pipex->cmdb);
 	pipex->i = 0;
-	while(pipex->pathb[pipex->i])
+	while (pipex->pathb[pipex->i])
 		free(pipex->pathb[pipex->i++]);
 	free(pipex->pathb);
 	close(pipex->pfd[0]);
@@ -146,7 +159,6 @@ void	ft_children(t_list *pipex, int ac, char **envp)
 	close(pipex->fd[0]);
 	close(pipex->fd[1]);
 }
-
 void	ft_children2(t_list *pipex, int ac, char **envp)
 {
 	if (pipex->i == 0)

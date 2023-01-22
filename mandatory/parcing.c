@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 14:26:51 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 17:22:16 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	main(int ac, char **av, char **envp)
 		exit (1);
 	}
 	ft_parcing(av, envp);
-	while(1);
 	return (0);
 }
 
@@ -66,6 +65,10 @@ void	ft_parcing(char **av, char **envp)
 	close(pipex.fd[1]);
 }
 
+void	ft_parcing(t_list *pipex)
+{
+	
+}
 void	first_child(char **av, char **envp, t_list *pipex)
 {
 	int		pid1;
