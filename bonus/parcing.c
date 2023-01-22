@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 14:36:21 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 15:40:10 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	main(int ac, char **av, char **envp)
 		parcing_here_doc(ac, av, envp);
 	else
 		ft_parcing_bonus(ac, av, envp);
-	while(1);
 	return (0);
 }
 
@@ -83,6 +82,7 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 	pipex.pathb = ft_calloc((ac - 2), sizeof(char *));
 	if (!pipex.cmdb || !pipex.pathb)
 		exit(1);
+		puts("here1");
 	while (++pipex.i < ac - 3)
 		pipex.cmdb[pipex.i] = ft_strtrim(av[2 + pipex.i], " ");
 	pipex.i = -1;
@@ -92,9 +92,11 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 	pipex.fd[0] = open(av[1], O_RDONLY, 0777);
 	if (pipex.fd[0] == -1)
 		exit(1);
+		puts("here2");
 	pipex.fd[1] = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (pipex.fd[1] == -1)
 		exit(1);
+		puts("here3");
 	ft_children(&pipex, ac, envp);
 }
 
@@ -118,8 +120,15 @@ void	ft_children(t_list *pipex, int ac, char **envp)
 		close(pipex->pfd[1]);
 		close(pipex->pfd[0]);
 		wait(NULL);
+		while(1);
 	}
+	pipex->i = 0;
+	while(pipex->cmdb[pipex->i])
+		free(pipex->cmdb[pipex->i++]);
 	free(pipex->cmdb);
+	pipex->i = 0;
+	while(pipex->pathb[pipex->i])
+		free(pipex->pathb[pipex->i++]);
 	free(pipex->pathb);
 	close(pipex->pfd[0]);
 	close(pipex->pfd[1]);
