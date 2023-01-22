@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 14:26:11 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/20 15:38:03 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 17:53:16 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,14 @@ char	*ft_read_str_get(int fd, char *str_left)
 	}
 	free(buff);
 	return (str_left);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

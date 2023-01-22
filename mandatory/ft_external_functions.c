@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 16:34:47 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/18 18:21:13 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 17:51:57 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,55 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	ns[i + j] = '\0';
 	return (ns);
+}
+
+char	*ft_check_valid_path(char *cmd, char **envp)
+{
+	char	**path;
+	char	*end_path;
+	char	*tmp;
+	char	*ret;
+	int		i;
+
+	i = 0;
+	tmp = NULL;
+	end_path = NULL;
+	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
+		i++;
+	path = ft_split(envp[i] + 5, ':');
+	if (!path)
+		exit(0);
+	ret = ft_free(path, tmp, end_path, cmd);
+	if (!ret)
+	{
+		write(2, "COMMAND NOT FOUND!!!\n", 21);
+		exit(1);
+	}
+	else
+		return (ret);
+}
+
+char	*ft_free(char **path, char *tmp, char *end_path, char *cmd)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (path[i])
+	{
+		tmp = ft_strjoin(path[i], "/");
+		end_path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(end_path, F_OK | X_OK) == 0)
+		{
+			while (path[j])
+				free(path[j++]);
+			free(path);
+			return (end_path);
+		}
+		free(end_path);
+		i++;
+	}
+	return (NULL);
 }

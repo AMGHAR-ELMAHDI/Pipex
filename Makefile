@@ -6,7 +6,7 @@
 #    By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/12 16:06:41 by eamghar           #+#    #+#              #
-#    Updated: 2023/01/20 16:39:31 by eamghar          ###   ########.fr        #
+#    Updated: 2023/01/22 17:57:57 by eamghar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC_B =	bonus/ft_external_functions.c \
 		bonus/get_next_line_utils.c \
 		bonus/here_doc.c \
 		bonus/parcing.c \
+		bonus/parcing2.c \
 
 CC = cc
 

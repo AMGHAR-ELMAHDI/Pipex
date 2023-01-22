@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:07:09 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 17:15:39 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 17:48:53 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ size_t	ft_strlen(const char *str);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 void	ft_bzero(void *s, size_t n);
 void	ft_parcing(char **av, char **envp);
-int		ft_parcing2(char **av, char **envp);
+void	ft_parcing2(t_list *pipex);
 char	*ft_check_valid_path(char *cmd, char **envp);
 char	*ft_strjoin(char const *s1, char const *s2);
 void	first_child(char **av, char **envp, t_list *pipex);

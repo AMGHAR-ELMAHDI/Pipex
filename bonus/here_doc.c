@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/20 15:40:36 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 16:48:17 by eamghar          ###   ########.fr       */
+/*   Created: 2023/01/22 17:54:10 by eamghar           #+#    #+#             */
+/*   Updated: 2023/01/22 17:54:33 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	parcing_here_doc3(char **av, char **envp, t_list *pipex)
 	close(pipex->fd[1]);
 	unlink("tmp");
 }
+
 void	first_child_here_doc(char **envp, t_list *pipex)
 {
 	int		pid1;
@@ -120,14 +121,4 @@ void	second_child_here_doc(char **av, char **envp, t_list *pipex)
 		if (execve(pipex->path2, pipex->cmd2, envp) == -1)
 			exit(1);
 	}
-}
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

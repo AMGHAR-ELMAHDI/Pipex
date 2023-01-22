@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 17:22:16 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 18:01:31 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ int	main(int ac, char **av, char **envp)
 void	ft_parcing(char **av, char **envp)
 {
 	t_list	pipex;
-	int		i;
 
-	i = 0;
 	pipex.cmd1 = ft_split(av[2], ' ');
 	pipex.cmd2 = ft_split(av[3], ' ');
 	if (!pipex.cmd1 || !pipex.cmd2)
@@ -50,25 +48,29 @@ void	ft_parcing(char **av, char **envp)
 		exit(1);
 	first_child(av, envp, &pipex);
 	second_child(av, envp, &pipex);
-	while(pipex.cmd1[i])
-		free(pipex.cmd1[i++]);
-	free(pipex.cmd1);
-	i = 0;
-	while(pipex.cmd2[i])
-		free(pipex.cmd2[i++]);
-	free(pipex.cmd2);
-	free(pipex.path1);
-	free(pipex.path2);
-	close(pipex.pfd[0]);
-	close(pipex.pfd[1]);
-	close(pipex.fd[0]);
-	close(pipex.fd[1]);
+	ft_parcing2(&pipex);
 }
 
-void	ft_parcing(t_list *pipex)
+void	ft_parcing2(t_list *pipex)
 {
-	
+	int		i;
+
+	i = 0;
+	while (pipex->cmd1[i])
+		free(pipex->cmd1[i++]);
+	free(pipex->cmd1);
+	i = 0;
+	while (pipex->cmd2[i])
+		free(pipex->cmd2[i++]);
+	free(pipex->cmd2);
+	free(pipex->path1);
+	free(pipex->path2);
+	close(pipex->pfd[0]);
+	close(pipex->pfd[1]);
+	close(pipex->fd[0]);
+	close(pipex->fd[1]);
 }
+
 void	first_child(char **av, char **envp, t_list *pipex)
 {
 	int		pid1;
@@ -113,39 +115,4 @@ void	second_child(char **av, char **envp, t_list *pipex)
 		if (execve(pipex->path2, pipex->cmd2, envp) == -1)
 			exit(1);
 	}
-}
-
-char	*ft_check_valid_path(char *cmd, char **envp)
-{
-	char	**path;
-	char	*end_path;
-	char	*tmp;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
-		i++;
-	path = ft_split(envp[i] + 5, ':');
-	if (!path)
-		exit(0);
-	i = 0;
-	while (path[i])
-	{
-		tmp = ft_strjoin(path[i], "/");
-		end_path = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(end_path, F_OK | X_OK) == 0)
-		{
-			while(path[j])
-				free(path[j++]);
-			free(path);
-			return (end_path);
-		}
-		free(end_path);
-		i++;
-	}
-	write(2, "COMMAND NOT FOUND!!!\n", 21);
-	exit(1);
 }
