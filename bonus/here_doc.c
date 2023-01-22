@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 15:40:36 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/21 23:46:27 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 14:52:45 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@ void	parcing_here_doc(int ac, char **av, char **envp)
 		exit(1);
 	pipex.path1 = ft_check_valid_path(pipex.cmd1[0], envp);
 	pipex.path2 = ft_check_valid_path(pipex.cmd2[0], envp);
-	if (!pipex.path1 || !pipex.path2)
-		exit(1);
 	parcing_here_doc2(av, envp, &pipex);
 }
 
 void	parcing_here_doc2(char **av, char **envp, t_list *pipex)
 {
+	int		i;
+
+	i = 0;
 	pipex->fd[0] = open("tmp", O_CREAT | O_RDWR | O_APPEND, 0777);
 	if (pipex->fd[0] == -1)
 		exit(1);
@@ -41,20 +42,31 @@ void	parcing_here_doc2(char **av, char **envp, t_list *pipex)
 	if (!pipex->limiter)
 		exit(1);
 	pipex->s = get_next_line_get(0);
-	if (!pipex->s)
-		exit(1);
-	while (ft_strcmp(pipex->s, pipex->limiter) != 0)
+	while (pipex->s && ft_strcmp(pipex->s, pipex->limiter) != 0)
 	{
 		ft_putstr_fd(pipex->s, pipex->fd[0]);
 		free(pipex->s);
 		pipex->s = get_next_line_get(0);
 	}
+	free(pipex->s);
 	if (pipe(pipex->pfd) == -1)
 		exit(1);
 	first_child_here_doc(envp, pipex);
 	second_child_here_doc(av, envp, pipex);
+	waitpid(-1, NULL, 0);
+	i = 0;
+	while(pipex->cmd1[i])
+		free(pipex->cmd1[i++]);
+	free(pipex->cmd1);
+	i = 0;
+	while(pipex->cmd2[i])
+		free(pipex->cmd2[i++]);
+	free(pipex->cmd2);
+	free(pipex->limiter);
 	close(pipex->pfd[0]);
 	close(pipex->pfd[1]);
+	free(pipex->path1);
+	free(pipex->path2);
 	close(pipex->fd[0]);
 	close(pipex->fd[1]);
 	unlink("tmp");

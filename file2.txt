@@ -1,3 +1,0 @@
-ft_1
-ft_ll
-ft_pp

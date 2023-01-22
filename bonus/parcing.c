@@ -6,7 +6,7 @@
 /*   By: eamghar <eamghar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:09:35 by eamghar           #+#    #+#             */
-/*   Updated: 2023/01/22 14:22:43 by eamghar          ###   ########.fr       */
+/*   Updated: 2023/01/22 14:36:21 by eamghar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,45 @@ int	main(int ac, char **av, char **envp)
 		parcing_here_doc(ac, av, envp);
 	else
 		ft_parcing_bonus(ac, av, envp);
+	while(1);
 	return (0);
 }
 
-char	*ft_check_valid_path_b(char *cmd, char **envp)
+char	*ft_check_valid_path(char *cmd, char **envp)
 {
 	char	**path;
 	char	*end_path;
 	char	*tmp;
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
 		i++;
 	path = ft_split(envp[i] + 5, ':');
 	if (!path)
 		exit(0);
-	i = -1;
-	while (path[++i])
+	i = 0;
+	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");
 		end_path = ft_strjoin(tmp, cmd);
 		free(tmp);
 		if (access(end_path, F_OK | X_OK) == 0)
+		{
+			while(path[j])
+				free(path[j++]);
+			free(path);
 			return (end_path);
+		}
+		free(end_path);
+		i++;
 	}
 	write(2, "COMMAND NOT FOUND!!!\n", 21);
 	exit(1);
 }
+
 
 void	ft_parcing_bonus(int ac, char **av, char **envp)
 {
@@ -76,7 +87,7 @@ void	ft_parcing_bonus(int ac, char **av, char **envp)
 		pipex.cmdb[pipex.i] = ft_strtrim(av[2 + pipex.i], " ");
 	pipex.i = -1;
 	while (pipex.cmdb[++pipex.i])
-		pipex.pathb[pipex.i] = ft_check_valid_path_b
+		pipex.pathb[pipex.i] = ft_check_valid_path
 			(ft_split(pipex.cmdb[pipex.i], ' ')[0], envp);
 	pipex.fd[0] = open(av[1], O_RDONLY, 0777);
 	if (pipex.fd[0] == -1)
